@@ -48,6 +48,14 @@ interface BallState {
 const FIELD_W = 700;
 const FIELD_H = 440;
 
+// Rotaciona as posições do formation (original: vertical → horizontal)
+// Original: y=0=top(away gol), y=100=bottom(home gol)
+// Novo: x=0=left(home gol), x=100=right(away gol), y=0=top, y=100=bottom
+// Rotação: newX = 100 - oldY, newY = oldX
+function rotPos(p: { x: number; y: number }): { x: number; y: number } {
+  return { x: 100 - p.y, y: p.x };
+}
+
 const FORMATIONS: Record<string, { x: number; y: number }[]> = {
   "4-4-2": [
     { x: 50, y: 92 }, { x: 18, y: 72 }, { x: 35, y: 76 }, { x: 65, y: 76 }, { x: 82, y: 72 },
@@ -388,10 +396,14 @@ export default function FieldCanvas({
       const H = FIELD_H;
       const scale = canvas.width / W;
 
+      // Rotaciona coordenadas internas (vertical) para desenho (horizontal)
+      const rx = (v: number) => (v / 100) * H;  // y interno → x desenho
+      const ry = (v: number) => (v / 100) * W;  // x interno → y desenho
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Gramado
-      const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      // Gramado (gradiente horizontal)
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
       grad.addColorStop(0, "#2d7a2d");
       grad.addColorStop(0.5, "#3a9a3a");
       grad.addColorStop(1, "#2d7a2d");
@@ -401,26 +413,26 @@ export default function FieldCanvas({
       ctx.strokeStyle = "rgba(255,255,255,0.3)";
       ctx.lineWidth = 1.5 * scale;
 
-      // Linhas
-      ctx.strokeRect(4 * scale, 4 * scale, W - 8 * scale, H - 8 * scale);
+      // Linhas (rotacionadas: campo deitado)
+      ctx.strokeRect(4 * scale, 4 * scale, H - 8 * scale, W - 8 * scale);
       ctx.beginPath();
-      ctx.moveTo(W / 2, 4 * scale);
-      ctx.lineTo(W / 2, H - 4 * scale);
+      ctx.moveTo(H / 2, 4 * scale);
+      ctx.lineTo(H / 2, W - 4 * scale);
       ctx.stroke();
       ctx.beginPath();
-      ctx.arc(W / 2, H / 2, 30 * scale, 0, Math.PI * 2);
+      ctx.arc(H / 2, W / 2, 30 * scale, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Áreas
-      ctx.strokeRect(W / 2 - 60 * scale, H - 55 * scale, 120 * scale, 51 * scale);
-      ctx.strokeRect(W / 2 - 25 * scale, H - 20 * scale, 50 * scale, 16 * scale);
-      ctx.strokeRect(W / 2 - 60 * scale, 4 * scale, 120 * scale, 51 * scale);
-      ctx.strokeRect(W / 2 - 25 * scale, 4 * scale, 50 * scale, 16 * scale);
+      // Áreas (gol visitante = esquerda, gol casa = direita)
+      ctx.strokeRect(4 * scale, W / 2 - 60 * scale, 51 * scale, 120 * scale);
+      ctx.strokeRect(20 * scale, W / 2 - 25 * scale, 16 * scale, 50 * scale);
+      ctx.strokeRect(H - 55 * scale, W / 2 - 60 * scale, 51 * scale, 120 * scale);
+      ctx.strokeRect(H - 36 * scale, W / 2 - 25 * scale, 16 * scale, 50 * scale);
 
-      // Jogadores
+      // Jogadores (com coordenadas rotacionadas)
       for (const d of dots) {
-        const px = (d.x / 100) * W;
-        const py = (d.y / 100) * H;
+        const px = rx(d.y);  // depth vira horizontal
+        const py = ry(d.x);  // spread vira vertical
         const isHome = d.team === "home";
         const isHolder = d.hasBall;
         const r = isHolder ? 18 * scale : 14 * scale;
@@ -465,15 +477,15 @@ export default function FieldCanvas({
         ctx.font = `${18 * scale}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("⚽", (bx / 100) * W, (by / 100) * H);
+        ctx.fillText("⚽", rx(by), ry(bx));
       }
 
       // Linha de trajetória (passe/chute)
       if (ball.flying) {
-        const fx = (ball.fromX / 100) * W;
-        const fy = (ball.fromY / 100) * H;
-        const tx = (ball.toX / 100) * W;
-        const ty = (ball.toY / 100) * H;
+        const fx = rx(ball.fromY);
+        const fy = ry(ball.fromX);
+        const tx = rx(ball.toY);
+        const ty = ry(ball.toX);
         ctx.beginPath();
         ctx.moveTo(fx, fy);
         ctx.lineTo(tx, ty);
@@ -496,12 +508,12 @@ export default function FieldCanvas({
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#000";
         ctx.lineWidth = 3 * scale;
-        ctx.strokeText("⚽⚽⚽", W / 2, H / 2 - 20 * scale);
-        ctx.fillText("⚽⚽⚽", W / 2, H / 2 - 20 * scale);
+        ctx.strokeText("⚽⚽⚽", H / 2, W / 2 - 20 * scale);
+        ctx.fillText("⚽⚽⚽", H / 2, W / 2 - 20 * scale);
         if (goalText) {
           ctx.font = `bold ${14 * scale}px sans-serif`;
-          ctx.strokeText(goalText, W / 2, H / 2 + 30 * scale);
-          ctx.fillText(goalText, W / 2, H / 2 + 30 * scale);
+          ctx.strokeText(goalText, H / 2, W / 2 + 30 * scale);
+          ctx.fillText(goalText, H / 2, W / 2 + 30 * scale);
         }
       }
 
@@ -512,9 +524,9 @@ export default function FieldCanvas({
         ctx.textBaseline = "bottom";
         ctx.fillStyle = "rgba(0,0,0,0.6)";
         const msgW = ctx.measureText(message).width;
-        ctx.fillRect(W / 2 - msgW / 2 - 10 * scale, H - 30 * scale, msgW + 20 * scale, 24 * scale);
+        ctx.fillRect(H / 2 - msgW / 2 - 10 * scale, W - 30 * scale, msgW + 20 * scale, 24 * scale);
         ctx.fillStyle = "#fff";
-        ctx.fillText(message, W / 2, H - 10 * scale);
+        ctx.fillText(message, H / 2, W - 10 * scale);
       }
     }
 
@@ -522,20 +534,16 @@ export default function FieldCanvas({
 
     function gameLoop() {
       if (!running) return;
-      // Só executa simulateTick a cada 8 frames (~7.5 fps de simulação)
+      // Só executa simulateTick a cada 16 frames (~3.75 fps de simulação)
       frameCount++;
-      if (frameCount % 8 === 0) {
+      if (frameCount % 16 === 0) {
         simulateTick();
-      } else if (frameCount % 4 === 0) {
-        // A cada 4 frames: só move a posse sem ações
+      } else if (frameCount % 8 === 0) {
+        // A cada 8 frames: suaviza posição dos jogadores sem bola
         for (const d of dots) {
           if (d.hasBall || d.position === "GK") continue;
-          const posArr = d.team === "home" ? FORMATIONS[homeFormation] : FORMATIONS[awayFormation];
-          const base = (posArr ?? FORMATIONS["4-4-2"]!)[d.number - 1] ?? { x: 50, y: 50 };
-          const bx = d.team === "home" ? base.x : 100 - base.x;
-          const by = d.team === "home" ? base.y : 100 - base.y;
-          d.x += (bx - d.x) * 0.02;
-          d.y += (by - d.y) * 0.02;
+          d.x += (d.tx - d.x) * 0.03;
+          d.y += (d.ty - d.y) * 0.03;
         }
       }
       drawField();
