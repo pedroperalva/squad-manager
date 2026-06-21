@@ -15,6 +15,8 @@ interface MiniFieldProps {
   minute: number;
   events?: GoalEvent[];
   cardEvents?: CardEvent[];
+  homeColor?: string;
+  awayColor?: string;
 }
 
 const FIELD_W = 700;
@@ -127,6 +129,8 @@ export default function MiniField({
   minute,
   events = [],
   cardEvents = [],
+  homeColor = "#4ade80",
+  awayColor = "#f87171",
 }: MiniFieldProps) {
   const [simPlayers, setSimPlayers] = useState<SimPlayer[]>([]);
   const [ball, setBall] = useState<SimBall>({ x: 50, y: 50, visible: true });
@@ -545,8 +549,10 @@ export default function MiniField({
           const py = (p.y / 100) * FIELD_H;
           const isHolder = p.hasBall;
           const isHome = p.team === "home";
-          const dotColor = isHome ? "#4ade80" : "#f87171";
-          const borderColor = isHome ? "#22c55e" : "#ef4444";
+          const dotColor = isHome ? homeColor : awayColor;
+          const borderColor = isHome
+            ? homeColor
+            : awayColor;
 
           return (
             <g key={p.id}>
@@ -567,7 +573,7 @@ export default function MiniField({
                 y={py + 1}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={isHome ? "#052e16" : "#450a0a"}
+                fill={isHome ? "#ffffff" : "#ffffff"}
                 fontSize={isHolder ? 13 : 11}
                 fontWeight={700}
                 fontFamily="monospace"

@@ -1997,6 +1997,8 @@ export default function LiveRoundView({
               homeGoals={humanMatch.events.filter(e => e.team === "home" && e.minute <= minute).length}
               awayGoals={humanMatch.events.filter(e => e.team === "away" && e.minute <= minute).length}
               minute={minute}
+              homeColor={state.clubs.find(c => c.id === humanMatch.homeClubId)?.primaryColor ?? "#4ade80"}
+              awayColor={state.clubs.find(c => c.id === humanMatch.awayClubId)?.primaryColor ?? "#f87171"}
             />
           </div>
         ) : mode === "cup" ? (
