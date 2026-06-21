@@ -1,0 +1,58 @@
+[
+  {
+    "route": "/game/[id]",
+    "firstLoadUncompressedJsBytes": 785777,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/05-c3ty_6dwfk.js",
+      ".next/static/chunks/14mrh2-p_w84d.js",
+      ".next/static/chunks/02xdtq1q-j_1q.js",
+      ".next/static/chunks/0n18nk1nk1f3p.js",
+      ".next/static/chunks/0iq1i69206cyl.js",
+      ".next/static/chunks/27jktro2p5rq9.js",
+      ".next/static/chunks/07u_h6i539_wj.js",
+      ".next/static/chunks/3peubv2924kx4.js",
+      ".next/static/chunks/turbopack-2rpbg0v8ghw10.js"
+    ]
+  },
+  {
+    "route": "/new",
+    "firstLoadUncompressedJsBytes": 558076,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/05-c3ty_6dwfk.js",
+      ".next/static/chunks/14mrh2-p_w84d.js",
+      ".next/static/chunks/1v6fjsjaj_1c1.js",
+      ".next/static/chunks/0iq1i69206cyl.js",
+      ".next/static/chunks/27jktro2p5rq9.js",
+      ".next/static/chunks/07u_h6i539_wj.js",
+      ".next/static/chunks/3peubv2924kx4.js",
+      ".next/static/chunks/turbopack-2rpbg0v8ghw10.js"
+    ]
+  },
+  {
+    "route": "/",
+    "firstLoadUncompressedJsBytes": 543513,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/05-c3ty_6dwfk.js",
+      ".next/static/chunks/14mrh2-p_w84d.js",
+      ".next/static/chunks/0mihoyfk1l87h.js",
+      ".next/static/chunks/0iq1i69206cyl.js",
+      ".next/static/chunks/27jktro2p5rq9.js",
+      ".next/static/chunks/07u_h6i539_wj.js",
+      ".next/static/chunks/3peubv2924kx4.js",
+      ".next/static/chunks/turbopack-2rpbg0v8ghw10.js"
+    ]
+  },
+  {
+    "route": "/_not-found",
+    "firstLoadUncompressedJsBytes": 514649,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/05-c3ty_6dwfk.js",
+      ".next/static/chunks/14mrh2-p_w84d.js",
+      ".next/static/chunks/0iq1i69206cyl.js",
+      ".next/static/chunks/27jktro2p5rq9.js",
+      ".next/static/chunks/07u_h6i539_wj.js",
+      ".next/static/chunks/3peubv2924kx4.js",
+      ".next/static/chunks/turbopack-2rpbg0v8ghw10.js"
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "node": {
+    "40807c4c3b2c7957c794a936da444570a4ce937d73": {
+      "workers": {
+        "app/page": {
+          "moduleId": 32989,
+          "async": false,
+          "exportedName": "actionDeleteSave",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionDeleteSave",
+      "filename": "src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

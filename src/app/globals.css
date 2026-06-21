@@ -1,0 +1,376 @@
+@import "tailwindcss";
+
+:root {
+  --ef-brand: #69925c;
+  --ef-brand-dark: #4f7350;
+  --ef-brand-darker: #3d5235;
+  --ef-brand-light: #8aab7e;
+  --ef-bg: #3d5235;
+  --ef-bg-gradient: linear-gradient(
+    165deg,
+    #3d5235 0%,
+    #4f7350 45%,
+    #69925c 100%
+  );
+  --ef-panel-bg: #4a6344;
+  --ef-border: color-mix(in srgb, #ffffff 22%, #69925c);
+  --ef-accent: #ffffff;
+  --ef-accent-hover: #f0f4ee;
+  --ef-text: #ffffff;
+  --ef-text-muted: color-mix(in srgb, #ffffff 72%, #69925c);
+  --ef-team-primary: #ffffff;
+  --ef-team-secondary: #69925c;
+  --ef-team-accent: #ffffff;
+  --ef-radius: 0.5rem;
+  --ef-shadow: 0 8px 32px color-mix(in srgb, #3d5235 35%, transparent);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--ef-bg-gradient);
+  background-color: var(--ef-brand-darker);
+  color: var(--ef-text);
+}
+
+.ef-landing {
+  --ef-landing-text: #2a3d26;
+  --ef-landing-muted: #5c6e58;
+  min-height: calc(100vh - 3rem);
+  padding: 0.5rem 0 2rem;
+  color: var(--ef-text);
+}
+
+.ef-landing-ordinal {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.ef-landing-hero-muted {
+  color: var(--ef-text-muted);
+}
+
+.ef-landing-hero-kicker {
+  color: color-mix(in srgb, #ffffff 88%, var(--ef-brand-light));
+}
+
+.ef-landing-card {
+  border: 1px solid color-mix(in srgb, var(--ef-brand) 18%, #ffffff);
+  background: #ffffff;
+  border-radius: var(--ef-radius);
+  box-shadow: var(--ef-shadow);
+  color: var(--ef-landing-text);
+}
+
+.ef-landing-title {
+  color: var(--ef-brand);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.ef-landing-muted {
+  color: var(--ef-landing-muted);
+}
+
+.ef-landing-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--ef-radius);
+  border: 2px solid var(--ef-brand);
+  background: var(--ef-brand);
+  color: #ffffff;
+  padding: 0.65rem 1.35rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ef-brand) 35%, transparent);
+}
+
+.ef-landing-btn-primary:hover {
+  background: var(--ef-brand-dark);
+  border-color: var(--ef-brand-dark);
+  transform: translateY(-1px);
+}
+
+.ef-landing-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ef-landing-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ef-radius);
+  border: 2px solid color-mix(in srgb, var(--ef-brand) 35%, #ffffff);
+  background: #ffffff;
+  color: var(--ef-brand);
+  padding: 0.55rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ef-landing-btn-secondary:hover {
+  background: color-mix(in srgb, var(--ef-brand) 8%, #ffffff);
+  border-color: var(--ef-brand);
+}
+
+.ef-landing-input {
+  width: 100%;
+  border-radius: calc(var(--ef-radius) - 2px);
+  border: 1px solid color-mix(in srgb, var(--ef-brand) 25%, #d8e0d4);
+  background: #fafcf9;
+  color: var(--ef-landing-text);
+  padding: 0.55rem 0.75rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ef-landing-input:focus {
+  outline: none;
+  border-color: var(--ef-brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ef-brand) 22%, transparent);
+}
+
+.ef-live-theme {
+  --ef-bg: #3d5235;
+  --ef-bg-gradient: linear-gradient(
+    165deg,
+    #3d5235 0%,
+    #4f7350 45%,
+    #69925c 100%
+  );
+  --ef-panel-bg: #4a6344;
+  --ef-border: color-mix(in srgb, #ffffff 22%, #69925c);
+  --ef-text: #ffffff;
+  --ef-text-muted: color-mix(in srgb, #ffffff 72%, #69925c);
+  --ef-team-accent: #ffffff;
+  --ef-team-primary: #ffffff;
+  --ef-team-secondary: #69925c;
+  color: var(--ef-text);
+  background: var(--ef-bg-gradient);
+}
+
+.ef-live-theme .ef-match-score {
+  color: var(--ef-team-accent);
+}
+
+.ef-live-match-home,
+.ef-live-match-away {
+  min-width: 0;
+  flex: 1 1 0;
+  padding: 0.35rem 0.5rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ef-live-match-home {
+  text-align: left;
+}
+
+.ef-live-match-away {
+  text-align: right;
+}
+
+.ef-live-event {
+  width: 20rem;
+  min-width: 20rem;
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--ef-text-muted);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.ef-live-event-yellow {
+  color: #fde68a;
+  font-weight: 600;
+}
+
+.ef-live-event-red {
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+.ef-game-theme {
+  color: var(--ef-text);
+  background: var(--ef-bg-gradient, var(--ef-bg));
+}
+
+.ef-base-theme {
+  --ef-bg: #3d5235;
+  --ef-bg-gradient: linear-gradient(
+    165deg,
+    #3d5235 0%,
+    #4f7350 45%,
+    #69925c 100%
+  );
+  --ef-panel-bg: #4a6344;
+  --ef-border: color-mix(in srgb, #ffffff 22%, #69925c);
+  --ef-text: #ffffff;
+  --ef-text-muted: color-mix(in srgb, #ffffff 72%, #69925c);
+  --ef-team-primary: #ffffff;
+  --ef-team-secondary: #69925c;
+  --ef-team-accent: #ffffff;
+  color: var(--ef-text);
+}
+
+.ef-panel {
+  border: 1px solid var(--ef-border);
+  background: color-mix(in srgb, var(--ef-panel-bg) 88%, transparent);
+  border-radius: var(--ef-radius);
+  box-shadow: 0 2px 12px color-mix(in srgb, #000000 12%, transparent);
+}
+
+.ef-game-theme .ef-panel {
+  border-color: color-mix(in srgb, var(--ef-team-primary) 28%, var(--ef-border));
+}
+
+.ef-club-header {
+  border-left: 6px solid var(--ef-team-primary);
+  border-bottom: 3px solid var(--ef-team-secondary);
+}
+
+.ef-btn {
+  border: 1px solid var(--ef-border);
+  border-radius: calc(var(--ef-radius) - 2px);
+  background: color-mix(in srgb, var(--ef-panel-bg) 82%, #ffffff 18%);
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  color: var(--ef-text);
+}
+
+.ef-btn:hover {
+  background: color-mix(in srgb, var(--ef-panel-bg) 65%, #ffffff 35%);
+  border-color: color-mix(in srgb, #ffffff 40%, var(--ef-border));
+}
+
+.ef-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ef-btn-active {
+  background: color-mix(in srgb, var(--ef-brand) 55%, #ffffff 45%) !important;
+  color: var(--ef-brand-darker) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #ffffff 65%, var(--ef-brand));
+  font-weight: 600;
+}
+
+.ef-title {
+  color: var(--ef-team-accent);
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.ef-table {
+  border-radius: calc(var(--ef-radius) - 2px);
+  overflow: hidden;
+}
+
+.ef-table th,
+.ef-table td {
+  border: 1px solid var(--ef-border);
+  padding: 0.35rem 0.55rem;
+  text-align: left;
+  color: var(--ef-text);
+}
+
+.ef-table th {
+  background: color-mix(in srgb, var(--ef-panel-bg) 70%, #ffffff 30%);
+  color: var(--ef-team-accent);
+  font-weight: 600;
+}
+
+.ef-table td.ef-standings-rank-up {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.ef-table td.ef-standings-rank-mid {
+  font-weight: 700;
+}
+
+.ef-table td.ef-standings-rank-down {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.ef-highlight {
+  background: color-mix(in srgb, #ffffff 12%, var(--ef-panel-bg));
+  box-shadow: inset 3px 0 0 var(--ef-team-accent);
+}
+
+.ef-accent-text {
+  color: var(--ef-team-accent);
+}
+
+.ef-muted-text {
+  color: var(--ef-text-muted);
+}
+
+.ef-link {
+  color: var(--ef-brand);
+  font-weight: 500;
+}
+
+.ef-landing .ef-link {
+  color: var(--ef-brand);
+}
+
+.ef-landing-saves-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.ef-landing-saves-table th,
+.ef-landing-saves-table td {
+  border-bottom: 1px solid color-mix(in srgb, var(--ef-brand) 12%, #ffffff);
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  color: var(--ef-landing-text);
+}
+
+.ef-landing-saves-table th {
+  color: var(--ef-brand);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: color-mix(in srgb, var(--ef-brand) 6%, #ffffff);
+}
+
+.ef-landing-saves-table tbody tr:hover {
+  background: color-mix(in srgb, var(--ef-brand) 5%, #ffffff);
+}
+
+.ef-link:hover {
+  text-decoration: underline;
+}
+
+.ef-match-score {
+  color: var(--ef-team-accent);
+  font-weight: bold;
+}
+
+.ef-human-match {
+  border-color: var(--ef-team-accent) !important;
+  background: color-mix(in srgb, #ffffff 10%, var(--ef-panel-bg)) !important;
+}
+
+.ef-club-link {
+  color: var(--ef-text);
+  text-decoration: none;
+}
+
+.ef-club-link:hover {
+  color: var(--ef-team-accent);
+  text-decoration: underline;
+}

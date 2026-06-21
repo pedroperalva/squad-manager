@@ -1,0 +1,269 @@
+{
+  "node": {
+    "400d9e2a85c5deaec0005ae90bb1b55b69beba32c3": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionLoadGame",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionLoadGame",
+      "filename": "src/app/actions.ts"
+    },
+    "407a2f8faf3fa9f52d97b822a068fb8759731b72f9": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionStartNextSeason",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionStartNextSeason",
+      "filename": "src/app/actions.ts"
+    },
+    "6005871e870ea61b3e0172a47e642f565a2db82beb": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionSetFormation",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionSetFormation",
+      "filename": "src/app/actions.ts"
+    },
+    "700eb15f78b83c774ca6f35316e62c74b779db7001": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionSetSquad",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionSetSquad",
+      "filename": "src/app/actions.ts"
+    },
+    "601109dd014d080847b18f42a1a92ed90cd5045354": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionAcceptCoachOffer",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionAcceptCoachOffer",
+      "filename": "src/app/actions.ts"
+    },
+    "60f363f110bfc84e6aa6811a73f4306c77bff47d66": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionRejectCoachOffer",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionRejectCoachOffer",
+      "filename": "src/app/actions.ts"
+    },
+    "60dc54cbdc835ed61155c982e07a77da91364592b3": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionBuyPlayer",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionBuyPlayer",
+      "filename": "src/app/actions.ts"
+    },
+    "60413fb0e3cdbc6fd530f37f5149353ab7983d550e": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionRequestLoan",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionRequestLoan",
+      "filename": "src/app/actions.ts"
+    },
+    "60386cc9f4270cf84f93b98c558f61bf317ced30a7": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionRepayLoan",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionRepayLoan",
+      "filename": "src/app/actions.ts"
+    },
+    "60e00264a8d7c92b2d5070fa7daf710c916e084529": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionExpandStadium",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionExpandStadium",
+      "filename": "src/app/actions.ts"
+    },
+    "606e9509b58ed144b5d77b552e1c5ee5470607734e": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionAcceptPlayerRaise",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionAcceptPlayerRaise",
+      "filename": "src/app/actions.ts"
+    },
+    "600c279419c88a572b591850aa9e5a3a8eef36de24": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionRejectPlayerRaise",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionRejectPlayerRaise",
+      "filename": "src/app/actions.ts"
+    },
+    "70612106ebd27683277ad7f47fae9c23d4bd378955": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionUpdateAuctionMinBid",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionUpdateAuctionMinBid",
+      "filename": "src/app/actions.ts"
+    },
+    "60003d3662d556803f450137fe3c1812e3624d7987": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionCancelAuctionListing",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionCancelAuctionListing",
+      "filename": "src/app/actions.ts"
+    },
+    "70f340bde0b7a1940c9a43c69365de6755d2f594d1": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionSellPlayerNow",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionSellPlayerNow",
+      "filename": "src/app/actions.ts"
+    },
+    "70b636304da3af8fd42a1aa452a51aaa810e900621": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionConfirmManagerLineup",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionConfirmManagerLineup",
+      "filename": "src/app/actions.ts"
+    },
+    "40055f6537c068ef540b425c111758fd121547b9f0": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionSimulateRound",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionSimulateRound",
+      "filename": "src/app/actions.ts"
+    },
+    "78df7c9140fa4a74878eb010e946d7fd03927746c8": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionCompleteLiveRound",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionCompleteLiveRound",
+      "filename": "src/app/actions.ts"
+    },
+    "786174c9245f33d11f8c844da326822b320297d0bd": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionCompleteCupLiveRound",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionCompleteCupLiveRound",
+      "filename": "src/app/actions.ts"
+    },
+    "403bfd596509df82b2610b60ef4a6ab3f9eff5f73a": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionCompleteAuctionSession",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionCompleteAuctionSession",
+      "filename": "src/app/actions.ts"
+    },
+    "78183a52d4e580d2306891e287b9b395161b7b383d": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionResolveAuctionLot",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionResolveAuctionLot",
+      "filename": "src/app/actions.ts"
+    },
+    "4036579f53895f8dc7986f38f334a2f3c70390dc83": {
+      "workers": {
+        "app/game/[id]/page": {
+          "moduleId": 21314,
+          "async": false,
+          "exportedName": "actionSkipRemainingAuctionLots",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionSkipRemainingAuctionLots",
+      "filename": "src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

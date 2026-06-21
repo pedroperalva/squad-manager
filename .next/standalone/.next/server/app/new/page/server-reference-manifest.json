@@ -1,0 +1,17 @@
+{
+  "node": {
+    "709738f6ded9d9c985a3003f18e6f650de3df87079": {
+      "workers": {
+        "app/new/page": {
+          "moduleId": 34390,
+          "async": false,
+          "exportedName": "actionCreateGame",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "exportedName": "actionCreateGame",
+      "filename": "src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

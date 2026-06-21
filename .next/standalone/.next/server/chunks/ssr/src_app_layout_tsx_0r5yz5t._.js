@@ -1,0 +1,3 @@
+module.exports=[27572,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"pt-BR",children:(0,b.jsx)("body",{className:"min-h-screen font-sans antialiased",children:(0,b.jsx)("div",{className:"mx-auto min-h-screen max-w-5xl px-4 py-6",children:a})})})},"metadata",0,{title:"Squad Manager",description:"Manager de futebol — monte elenco, dispute ligas e conquiste títulos."}])},50645,a=>{a.n(a.i(27572))}];
+
+//# sourceMappingURL=src_app_layout_tsx_0r5yz5t._.js.map
