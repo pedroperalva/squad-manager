@@ -279,8 +279,8 @@ export default function FieldCanvas({
 
     function doDribble(dot: Dot) {
       const dir = dot.team === "home" ? -1 : 1;
-      dot.x += (Math.random() - 0.5) * 5;
-      dot.y += dir * (2 + Math.random() * 3);
+      dot.x += (Math.random() - 0.5) * 2.5;
+      dot.y += dir * (1 + Math.random() * 1.5);
       dot.x = clamp(dot.x);
       dot.y = clamp(dot.y);
       ball.x = dot.x;
@@ -323,8 +323,8 @@ export default function FieldCanvas({
         }
         d.tx = clamp(bx + ox);
         d.ty = clamp(by + oy);
-        d.x += (d.tx - d.x) * 0.1;
-        d.y += (d.ty - d.y) * 0.1;
+        d.x += (d.tx - d.x) * 0.07;
+        d.y += (d.ty - d.y) * 0.07;
       }
 
       // Jogador com a bola
@@ -372,7 +372,7 @@ export default function FieldCanvas({
 
       // Avança bola se estiver voando
       if (ball.flying) {
-        ball.progress += 0.06;
+        ball.progress += 0.03;
         if (ball.progress >= 1) {
           ball.progress = 1;
           ball.flying = false;
@@ -518,9 +518,26 @@ export default function FieldCanvas({
       }
     }
 
+    let frameCount = 0;
+
     function gameLoop() {
       if (!running) return;
-      simulateTick();
+      // Só executa simulateTick a cada 8 frames (~7.5 fps de simulação)
+      frameCount++;
+      if (frameCount % 8 === 0) {
+        simulateTick();
+      } else if (frameCount % 4 === 0) {
+        // A cada 4 frames: só move a posse sem ações
+        for (const d of dots) {
+          if (d.hasBall || d.position === "GK") continue;
+          const posArr = d.team === "home" ? FORMATIONS[homeFormation] : FORMATIONS[awayFormation];
+          const base = (posArr ?? FORMATIONS["4-4-2"]!)[d.number - 1] ?? { x: 50, y: 50 };
+          const bx = d.team === "home" ? base.x : 100 - base.x;
+          const by = d.team === "home" ? base.y : 100 - base.y;
+          d.x += (bx - d.x) * 0.02;
+          d.y += (by - d.y) * 0.02;
+        }
+      }
       drawField();
       requestAnimationFrame(gameLoop);
     }
