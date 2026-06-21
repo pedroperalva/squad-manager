@@ -1982,8 +1982,8 @@ export default function LiveRoundView({
         {animatedView && humanMatch ? (
           <div className="flex justify-center">
             <MiniField
-              homePlayers={getPlayersByClub(state.players, humanMatch.homeClubId)}
-              awayPlayers={getPlayersByClub(state.players, humanMatch.awayClubId)}
+              homePlayers={state.players.filter(p => humanMatch.homeLineupIds.includes(p.id))}
+              awayPlayers={state.players.filter(p => humanMatch.awayLineupIds.includes(p.id))}
               homeFormation={(() => {
                 const homeClub = state.clubs.find(c => c.id === humanMatch.homeClubId);
                 return homeClub?.formation ?? "4-4-2";
@@ -1997,6 +1997,8 @@ export default function LiveRoundView({
               homeGoals={humanMatch.events.filter(e => e.team === "home" && e.minute <= minute).length}
               awayGoals={humanMatch.events.filter(e => e.team === "away" && e.minute <= minute).length}
               minute={minute}
+              homeColor={state.clubs.find(c => c.id === humanMatch.homeClubId)?.primaryColor ?? "#4ade80"}
+              awayColor={state.clubs.find(c => c.id === humanMatch.awayClubId)?.primaryColor ?? "#f87171"}
             />
           </div>
         ) : mode === "cup" ? (

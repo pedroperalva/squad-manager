@@ -15,6 +15,8 @@ interface MiniFieldProps {
   minute: number;
   events?: GoalEvent[];
   cardEvents?: CardEvent[];
+  homeColor?: string;
+  awayColor?: string;
 }
 
 const FIELD_W = 700;
@@ -127,6 +129,8 @@ export default function MiniField({
   minute,
   events = [],
   cardEvents = [],
+  homeColor = "#4ade80",
+  awayColor = "#f87171",
 }: MiniFieldProps) {
   const [simPlayers, setSimPlayers] = useState<SimPlayer[]>([]);
   const [ball, setBall] = useState<SimBall>({ x: 50, y: 50, visible: true });
@@ -139,39 +143,47 @@ export default function MiniField({
   const [eventIndex, setEventIndex] = useState(0);
   const phaseRef = useRef(0);
   const lastScore = useRef({ home: 0, away: 0 });
+  const possessionRef = useRef(possession);
+  const ballRef = useRef(ball);
+  const playersRef = useRef<SimPlayer[]>([]);
 
   const homePositions = useMemo(() => getPositions(homeFormation, true), [homeFormation]);
   const awayPositions = useMemo(() => getPositions(awayFormation, false), [awayFormation]);
 
-  // Inicializa jogadores
+  // Inicializa jogadores (usa apenas os 11 titulares)
   useEffect(() => {
-    const homeDots: SimPlayer[] = homePlayers.slice(0, 11).map((p, i) => ({
-      id: p.id,
-      name: p.name,
-      x: homePositions[i]?.x ?? 50,
-      y: homePositions[i]?.y ?? 50,
-      tx: homePositions[i]?.x ?? 50,
-      ty: homePositions[i]?.y ?? 50,
-      team: "home" as const,
-      number: i + 1,
-      position: p.position,
-      hasBall: false,
-    }));
-    const awayDots: SimPlayer[] = awayPlayers.slice(0, 11).map((p, i) => ({
-      id: p.id,
-      name: p.name,
-      x: awayPositions[i]?.x ?? 50,
-      y: awayPositions[i]?.y ?? 50,
-      tx: awayPositions[i]?.x ?? 50,
-      ty: awayPositions[i]?.y ?? 50,
-      team: "away" as const,
-      number: i + 1,
-      position: p.position,
-      hasBall: false,
-    }));
+    const maxHome = Math.min(homePlayers.length, 11);
+    const maxAway = Math.min(awayPlayers.length, 11);
+
+    const homeDots: SimPlayer[] = [];
+    for (let i = 0; i < maxHome; i++) {
+      const p = homePlayers[i]!;
+      const pos = homePositions[i] ?? { x: 50, y: 50 };
+      homeDots.push({
+        id: p.id, name: p.name,
+        x: pos.x, y: pos.y, tx: pos.x, ty: pos.y,
+        team: "home", number: i + 1, position: p.position,
+        hasBall: false,
+      });
+    }
+
+    const awayDots: SimPlayer[] = [];
+    for (let i = 0; i < maxAway; i++) {
+      const p = awayPlayers[i]!;
+      const pos = awayPositions[i] ?? { x: 50, y: 50 };
+      awayDots.push({
+        id: p.id, name: p.name,
+        x: 100 - pos.x, y: 100 - pos.y,
+        tx: 100 - pos.x, ty: 100 - pos.y,
+        team: "away", number: i + 1, position: p.position,
+        hasBall: false,
+      });
+    }
+
     setSimPlayers([...homeDots, ...awayDots]);
     setBall({ x: 50, y: 50, visible: true });
     setPossession(Math.random() < 0.5 ? "home" : "away");
+    possessionRef.current = Math.random() < 0.5 ? "home" : "away";
     setCurrentMinute(1);
     setEventIndex(0);
     lastScore.current = { home: 0, away: 0 };
@@ -312,155 +324,126 @@ export default function MiniField({
     }
   }
 
-  // Ciclo principal de animação
+  // Mantém refs sincronizadas com state
+  useEffect(() => { possessionRef.current = possession; }, [possession]);
+  useEffect(() => { ballRef.current = ball; }, [ball]);
+
+  // Ciclo principal de animação — usa refs para não reiniciar o intervalo
   useEffect(() => {
-    if (simPlayers.length === 0 || currentMinute > 45 || currentMinute > minute) return;
+    if (simPlayers.length < 2) return;
+    playersRef.current = simPlayers;
 
     const interval = setInterval(() => {
       setSimPlayers((prev) => {
         const updated = prev.map((p) => ({ ...p }));
-        let ballX = ball.x;
-        let ballY = ball.y;
-
-        const attackingTeam = possession;
+        let bx = ballRef.current.x;
+        let by = ballRef.current.y;
+        const currentPossession = possessionRef.current;
+        const attackingTeam = currentPossession;
         const defendingTeam = attackingTeam === "home" ? "away" : "home";
 
-        // Jogadores sem bola se movem suavemente para posições avançadas/recuadas
+        // Jogadores sem bola se movem suavemente
         for (const p of updated) {
           if (p.hasBall) continue;
 
-          const basePos = p.team === "home"
-            ? homePositions[p.number - 1] ?? { x: 50, y: 50 }
-            : awayPositions[p.number - 1] ?? { x: 50, y: 50 };
+          const posArr = p.team === "home" ? homePositions : awayPositions;
+          const basePos = posArr[p.number - 1] ?? { x: 50, y: 50 };
 
-          // Avança ou recua baseado na posse
-          let offsetX = 0;
-          let offsetY = 0;
+          let ox = 0, oy = 0;
           if (p.team === attackingTeam && p.position !== "GK") {
-            offsetX = (Math.random() - 0.5) * 12;
-            offsetY = p.team === "home" ? -8 - Math.random() * 10 : 8 + Math.random() * 10;
+            ox = (Math.random() - 0.5) * 12;
+            oy = p.team === "home" ? -8 - Math.random() * 10 : 8 + Math.random() * 10;
           } else if (p.team === defendingTeam && p.position !== "GK") {
-            offsetX = (Math.random() - 0.5) * 8;
-            offsetY = p.team === "home" ? 5 + Math.random() * 5 : -5 - Math.random() * 5;
+            ox = (Math.random() - 0.5) * 8;
+            oy = p.team === "home" ? 5 + Math.random() * 5 : -5 - Math.random() * 5;
           }
 
-          p.tx = Math.max(2, Math.min(98, basePos.x + offsetX));
-          p.ty = Math.max(2, Math.min(98, basePos.y + offsetY));
-          p.x = lerp(p.x, p.tx, 0.12);
-          p.y = lerp(p.y, p.ty, 0.12);
+          p.tx = Math.max(2, Math.min(98, basePos.x + ox));
+          p.ty = Math.max(2, Math.min(98, basePos.y + oy));
+          p.x = lerp(p.x, p.tx, 0.15);
+          p.y = lerp(p.y, p.ty, 0.15);
         }
 
         // Jogador com a bola
         const ballCarrier = updated.find((p) => p.hasBall);
         if (ballCarrier) {
           const opponent = findNearestOpponent(updated, ballCarrier.x, ballCarrier.y, ballCarrier.team);
-
-          // Verifica se está perto do gol para chutar
           const distToGoal = ballCarrier.team === "home" ? ballCarrier.y : 100 - ballCarrier.y;
           const xDistToCenter = Math.abs(ballCarrier.x - 50);
 
           if (distToGoal < 20 && xDistToCenter < 25 && Math.random() < 0.3) {
             simulateShot(ballCarrier, updated, ballCarrier.team);
-            ballX = ballCarrier.x;
-            ballY = ballCarrier.y;
-          } else if (opponent && dist(ballCarrier.x, ballCarrier.y, opponent.x, opponent.y) < 8 && Math.random() < 0.4) {
-            // Perde a bola - desarme
+            bx = ballCarrier.x; by = ballCarrier.y;
+          } else if (opponent && dist(ballCarrier.x, ballCarrier.y, opponent.x, opponent.y) < 8 && Math.random() < 0.35) {
+            // Desarme
             setMessage(`${opponent.name} desarmou!`);
             setTimeout(() => setMessage(""), 1500);
             const newTeam = ballCarrier.team === "home" ? "away" : "home";
             setPossession(newTeam);
+            possessionRef.current = newTeam;
             ballCarrier.hasBall = false;
             const newHolder = updated.find((p) => p.id === opponent.id);
-            if (newHolder) {
-              newHolder.hasBall = true;
-              ballX = opponent.x;
-              ballY = opponent.y;
-            }
-          } else if (Math.random() < 0.15) {
-            // Tenta passe
-            const target = findBestPassTarget(
-              updated,
-              ballCarrier.x,
-              ballCarrier.y,
-              ballCarrier.team,
-              true
-            );
+            if (newHolder) { newHolder.hasBall = true; bx = opponent.x; by = opponent.y; }
+          } else if (Math.random() < 0.12) {
+            // Passe
+            const target = findBestPassTarget(updated, ballCarrier.x, ballCarrier.y, ballCarrier.team, true);
             if (target) {
               const passDist = dist(ballCarrier.x, ballCarrier.y, target.x, target.y);
+              setAction(passDist > 15
+                ? { type: "longball", fromX: ballCarrier.x, fromY: ballCarrier.y, toX: target.x, toY: target.y, team: ballCarrier.team }
+                : { type: "pass", fromX: ballCarrier.x, fromY: ballCarrier.y, toX: target.x, toY: target.y, team: ballCarrier.team }
+              );
               if (passDist > 15) {
-                setAction({
-                  type: "longball",
-                  fromX: ballCarrier.x,
-                  fromY: ballCarrier.y,
-                  toX: target.x,
-                  toY: target.y,
-                  team: ballCarrier.team,
-                });
                 setMessage(`Lançamento longo! 🚀`);
-              } else {
-                setAction({
-                  type: "pass",
-                  fromX: ballCarrier.x,
-                  fromY: ballCarrier.y,
-                  toX: target.x,
-                  toY: target.y,
-                  team: ballCarrier.team,
-                });
+                setTimeout(() => setMessage(""), 1200);
               }
-              setTimeout(() => setMessage(""), 1200);
               ballCarrier.hasBall = false;
               target.hasBall = true;
-              ballX = target.x;
-              ballY = target.y;
+              bx = target.x; by = target.y;
+            } else {
+              // Avança
+              const dir = ballCarrier.team === "home" ? -1 : 1;
+              ballCarrier.x += (Math.random() - 0.5) * 4;
+              ballCarrier.y += dir * (2 + Math.random() * 3);
+              ballCarrier.x = Math.max(5, Math.min(95, ballCarrier.x));
+              ballCarrier.y = Math.max(5, Math.min(95, ballCarrier.y));
+              bx = ballCarrier.x; by = ballCarrier.y;
             }
           } else {
             // Avança com a bola
             const dir = ballCarrier.team === "home" ? -1 : 1;
-            const advanceX = (Math.random() - 0.5) * 4;
-            const advanceY = dir * (2 + Math.random() * 3);
-            ballCarrier.x = Math.max(5, Math.min(95, ballCarrier.x + advanceX));
-            ballCarrier.y = Math.max(5, Math.min(95, ballCarrier.y + advanceY));
-            ballX = ballCarrier.x;
-            ballY = ballCarrier.y;
-
-            if (Math.random() < 0.08) {
-              setAction({
-                type: "dribble",
-                fromX: ballCarrier.x,
-                fromY: ballCarrier.y,
-                toX: ballCarrier.x + advanceX * 2,
-                toY: ballCarrier.y + advanceY * 2,
-                team: ballCarrier.team,
-              });
-            }
+            ballCarrier.x += (Math.random() - 0.5) * 4;
+            ballCarrier.y += dir * (2 + Math.random() * 3);
+            ballCarrier.x = Math.max(5, Math.min(95, ballCarrier.x));
+            ballCarrier.y = Math.max(5, Math.min(95, ballCarrier.y));
+            bx = ballCarrier.x; by = ballCarrier.y;
           }
         } else {
-          // Ninguém com a bola — atribui a alguém
-          const teamPlayers = updated.filter((p) => p.team === possession && p.position !== "GK");
+          // Atribui posse aleatória
+          const teamPlayers = updated.filter((p) => p.team === currentPossession && p.position !== "GK");
           if (teamPlayers.length > 0) {
             const holder = teamPlayers[Math.floor(Math.random() * teamPlayers.length)]!;
             holder.hasBall = true;
-            ballX = holder.x;
-            ballY = holder.y;
+            bx = holder.x; by = holder.y;
           }
         }
 
-        setBall((prev) => ({ ...prev, x: ballX, y: ballY }));
+        setBall((prev) => ({ ...prev, x: bx, y: by }));
+        ballRef.current = { x: bx, y: by, visible: true };
         return updated;
       });
-
       phaseRef.current += 1;
-    }, 180);
+    }, 200);
 
     return () => clearInterval(interval);
-  }, [simPlayers.length, possession, currentMinute, minute, homePositions, awayPositions, ball.x, ball.y]);
+  }, [simPlayers.length, homePositions, awayPositions, minute]);
 
-  // Avança o minuto automaticamente
+  // Avança o minuto automaticamente (90 minutos)
   useEffect(() => {
-    if (currentMinute >= minute || currentMinute >= 45) return;
+    if (currentMinute >= minute) return;
     const timer = setInterval(() => {
-      setCurrentMinute((prev) => Math.min(prev + 1, minute, 45));
-    }, 6000);
+      setCurrentMinute((prev) => Math.min(prev + 1, minute, 90));
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentMinute, minute]);
 
@@ -545,8 +528,10 @@ export default function MiniField({
           const py = (p.y / 100) * FIELD_H;
           const isHolder = p.hasBall;
           const isHome = p.team === "home";
-          const dotColor = isHome ? "#4ade80" : "#f87171";
-          const borderColor = isHome ? "#22c55e" : "#ef4444";
+          const dotColor = isHome ? homeColor : awayColor;
+          const borderColor = isHome
+            ? homeColor
+            : awayColor;
 
           return (
             <g key={p.id}>
@@ -567,7 +552,7 @@ export default function MiniField({
                 y={py + 1}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={isHome ? "#052e16" : "#450a0a"}
+                fill={isHome ? "#ffffff" : "#ffffff"}
                 fontSize={isHolder ? 13 : 11}
                 fontWeight={700}
                 fontFamily="monospace"
