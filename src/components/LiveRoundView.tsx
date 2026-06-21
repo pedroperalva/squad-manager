@@ -42,7 +42,7 @@ import { getHumanClubIds } from "@/engine/local-play";
 import { clubKitBlockStyle, clubPanelThemeStyle } from "@/lib/club-theme";
 import { actionCompleteLiveRound, actionCompleteCupLiveRound } from "@/app/actions";
 import PlayerNameWithStar from "@/components/PlayerNameWithStar";
-import MiniField from "@/components/MiniField";
+import FieldCanvas from "@/components/FieldCanvas";
 
 interface LiveRoundViewProps {
   state: GameState;
@@ -1981,7 +1981,7 @@ export default function LiveRoundView({
 
         {animatedView && humanMatch ? (
           <div className="flex justify-center">
-            <MiniField
+            <FieldCanvas
               homePlayers={state.players.filter(p => humanMatch.homeLineupIds.includes(p.id))}
               awayPlayers={state.players.filter(p => humanMatch.awayLineupIds.includes(p.id))}
               homeFormation={(() => {
@@ -1999,6 +1999,7 @@ export default function LiveRoundView({
               minute={minute}
               homeColor={state.clubs.find(c => c.id === humanMatch.homeClubId)?.primaryColor ?? "#4ade80"}
               awayColor={state.clubs.find(c => c.id === humanMatch.awayClubId)?.primaryColor ?? "#f87171"}
+              events={humanMatch.events}
             />
           </div>
         ) : mode === "cup" ? (
