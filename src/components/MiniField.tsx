@@ -150,35 +150,40 @@ export default function MiniField({
   const homePositions = useMemo(() => getPositions(homeFormation, true), [homeFormation]);
   const awayPositions = useMemo(() => getPositions(awayFormation, false), [awayFormation]);
 
-  // Inicializa jogadores
+  // Inicializa jogadores (usa apenas os 11 titulares)
   useEffect(() => {
-    const homeDots: SimPlayer[] = homePlayers.slice(0, 11).map((p, i) => ({
-      id: p.id,
-      name: p.name,
-      x: homePositions[i]?.x ?? 50,
-      y: homePositions[i]?.y ?? 50,
-      tx: homePositions[i]?.x ?? 50,
-      ty: homePositions[i]?.y ?? 50,
-      team: "home" as const,
-      number: i + 1,
-      position: p.position,
-      hasBall: false,
-    }));
-    const awayDots: SimPlayer[] = awayPlayers.slice(0, 11).map((p, i) => ({
-      id: p.id,
-      name: p.name,
-      x: awayPositions[i]?.x ?? 50,
-      y: awayPositions[i]?.y ?? 50,
-      tx: awayPositions[i]?.x ?? 50,
-      ty: awayPositions[i]?.y ?? 50,
-      team: "away" as const,
-      number: i + 1,
-      position: p.position,
-      hasBall: false,
-    }));
+    const maxHome = Math.min(homePlayers.length, 11);
+    const maxAway = Math.min(awayPlayers.length, 11);
+
+    const homeDots: SimPlayer[] = [];
+    for (let i = 0; i < maxHome; i++) {
+      const p = homePlayers[i]!;
+      const pos = homePositions[i] ?? { x: 50, y: 50 };
+      homeDots.push({
+        id: p.id, name: p.name,
+        x: pos.x, y: pos.y, tx: pos.x, ty: pos.y,
+        team: "home", number: i + 1, position: p.position,
+        hasBall: false,
+      });
+    }
+
+    const awayDots: SimPlayer[] = [];
+    for (let i = 0; i < maxAway; i++) {
+      const p = awayPlayers[i]!;
+      const pos = awayPositions[i] ?? { x: 50, y: 50 };
+      awayDots.push({
+        id: p.id, name: p.name,
+        x: 100 - pos.x, y: 100 - pos.y,
+        tx: 100 - pos.x, ty: 100 - pos.y,
+        team: "away", number: i + 1, position: p.position,
+        hasBall: false,
+      });
+    }
+
     setSimPlayers([...homeDots, ...awayDots]);
     setBall({ x: 50, y: 50, visible: true });
     setPossession(Math.random() < 0.5 ? "home" : "away");
+    possessionRef.current = Math.random() < 0.5 ? "home" : "away";
     setCurrentMinute(1);
     setEventIndex(0);
     lastScore.current = { home: 0, away: 0 };
@@ -325,7 +330,7 @@ export default function MiniField({
 
   // Ciclo principal de animação — usa refs para não reiniciar o intervalo
   useEffect(() => {
-    if (simPlayers.length === 0) return;
+    if (simPlayers.length < 2) return;
     playersRef.current = simPlayers;
 
     const interval = setInterval(() => {
@@ -433,12 +438,12 @@ export default function MiniField({
     return () => clearInterval(interval);
   }, [simPlayers.length, homePositions, awayPositions, minute]);
 
-  // Avança o minuto automaticamente
+  // Avança o minuto automaticamente (90 minutos)
   useEffect(() => {
-    if (currentMinute >= minute || currentMinute >= 45) return;
+    if (currentMinute >= minute) return;
     const timer = setInterval(() => {
-      setCurrentMinute((prev) => Math.min(prev + 1, minute, 45));
-    }, 6000);
+      setCurrentMinute((prev) => Math.min(prev + 1, minute, 90));
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentMinute, minute]);
 
