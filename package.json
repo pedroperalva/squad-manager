@@ -1,0 +1,80 @@
+{
+  "name": "squad-manager",
+  "version": "0.1.0",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "next dev",
+    "predev": "npm run rebuild:sqlite:node",
+    "rebuild:sqlite:node": "npm rebuild better-sqlite3",
+    "rebuild:sqlite:electron": "node scripts/rebuild-standalone-sqlite.cjs",
+    "build": "next build && node scripts/prepare-desktop.cjs",
+    "build:next": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "simulate": "tsx scripts/simulate-season.ts",
+    "validate-squads": "tsx scripts/validate-squads.ts",
+    "electron": "electron electron/main.js",
+    "electron:dev": "wait-on http://127.0.0.1:3000 && electron electron/main.js",
+    "desktop": "concurrently -k \"npm run dev\" \"npm run electron:dev\"",
+    "dist": "npm run rebuild:sqlite:node && node scripts/clean-dist-inputs.cjs && npm run build && npm run rebuild:sqlite:electron && electron-builder && npm run rebuild:sqlite:node",
+    "dist:dir": "npm run rebuild:sqlite:node && node scripts/clean-dist-inputs.cjs && npm run build && npm run rebuild:sqlite:electron && electron-builder --dir && npm run rebuild:sqlite:node"
+  },
+  "build": {
+    "appId": "com.squadmanager.app",
+    "productName": "Squad Manager",
+    "directories": {
+      "output": "release"
+    },
+    "npmRebuild": false,
+    "asar": false,
+    "afterPack": "scripts/after-pack.cjs",
+    "files": [
+      {
+        "from": ".next/standalone",
+        "to": ".",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "electron",
+        "to": "electron",
+        "filter": ["**/*"]
+      },
+      "package.json"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "drizzle-orm": "^0.45.2",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^10.0.3",
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "tailwindcss": "^4",
+    "tsx": "^4.22.4",
+    "typescript": "^5",
+    "wait-on": "^9.0.10"
+  }
+}

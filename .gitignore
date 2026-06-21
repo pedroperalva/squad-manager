@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.cache/
+*.log
+.DS_Store
+-e 
+.next/
+data/
+.wizardgenie/
+*.tsbuildinfo
+next-env.d.ts
